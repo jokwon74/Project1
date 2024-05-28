@@ -62,7 +62,6 @@ public class AdminPage extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				 
 				mPagePanel.removeAll();
-				
 				mPagePanel.add(new EmployeeManage(mPagePanel));
 				mPagePanel.revalidate(); 
 				mPagePanel.repaint();
