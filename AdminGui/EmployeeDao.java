@@ -84,6 +84,129 @@ public class EmployeeDao {
 	            }
 	        }
 	}
+	public static boolean checkName(String name) {
+
+		boolean result = false;
+		
+		try {
+		conn = DBUtil.getConnection();
+		String sql = "select EMP_NAME from employee";
+		pt = conn.prepareStatement(sql);
+		rs = pt.executeQuery();
+
+		while(rs.next()) {
+			
+			if(rs.getString("EMP_NAME").equals(name)) {
+				result = true;
+				System.out.println("찾았습니다." + rs.getString("EMP_NAME"));
+			}
+		}
+		
+		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	public static EmployeeVO search(String name) {
+		
+		EmployeeVO vo = null;
+		
+		try {
+			
+			System.out.println("EmployeeService의 search 함수 실행");
+			conn = DBUtil.getConnection();
+			
+			String sql = "select * from employee ";
+			sql += " where EMP_NAME = ?";
+			
+			pt = conn.prepareStatement(sql);
+			pt.setString(1,name);
+			
+			rs = pt.executeQuery();
+			
+			if(rs.next()) {
+				
+				vo = new EmployeeVO(
+					rs.getInt("EMP_ID"),
+					rs.getString("EMP_NAME"),
+					rs.getString("EMP_BIRTH"),
+					rs.getString("EMP_EMAIL"),
+					rs.getString("EMP_PHONE"),
+					rs.getString("DEPT_CODE"),
+					rs.getString("JOB_CODE"),
+					rs.getString("HIRE_DATE")
+					 
+				);				
+			}
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return vo;
+	}
+	
+	public static int update(String name,String dept) {
+		
+		conn = DBUtil.getConnection();
+		int result = 0;
+		
+		try {
+			System.out.println("EmployeeDao의 부서update함수 실행");
+			String sql = "update employee ";
+			sql += " set DEPT_CODE =  ? ";
+			sql += " where EMP_NAME = ?";
+			
+			pt = conn.prepareStatement(sql);
+			
+			pt.setString(1, dept);
+			pt.setString(2, name);
+			
+			result = pt.executeUpdate();
+			
+			System.out.println(result);
+			System.out.println("업데이트 성공");
+			
+					
+		}catch (Exception e) {
+			e.printStackTrace();
+		}	
+		return result;
+	}
+	
+	public static int updateJob(String name,String job) {
+		
+		conn = DBUtil.getConnection();
+		int result = 0;
+		
+		try {
+			System.out.println("EmployeeDao의 부서update함수 실행");
+			String sql = "update employee ";
+			sql += " set JOB_CODE =  ? ";
+			sql += " where EMP_NAME = ?";
+			
+			pt = conn.prepareStatement(sql);
+			
+			pt.setString(1, job);
+			pt.setString(2, name);
+			
+			result = pt.executeUpdate();
+			
+			System.out.println(result);
+			System.out.println("업데이트 성공");
+			
+					
+		}catch (Exception e) {
+			e.printStackTrace();
+		}	
+		return result;
+	}
+	
+
+
 }
 
 

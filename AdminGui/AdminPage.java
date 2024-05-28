@@ -38,7 +38,7 @@ public class AdminPage extends JFrame{
 		
 		mMenuPanel = new JPanel();
 		mMenuPanel.setLayout(null);
-		mMenuPanel.setBounds(0, 30, width, 130);
+		mMenuPanel.setBounds(140, 60, width, 130);
 		
 		menuBtn();
 
