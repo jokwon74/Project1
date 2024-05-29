@@ -134,7 +134,7 @@ public class loginGUI extends JFrame {
 								
 							// 1. 첫 로그인 : 비밀번호 변경 팝업
 							if((id == inputId) && (pw.equals(inputPw)) && (pw.equals(birth))) {
-								System.out.println("로그인 성공");
+								// System.out.println("로그인 성공");
 								ChangePw(id, pw);
 								return;
 							}
@@ -243,9 +243,8 @@ public class loginGUI extends JFrame {
 								pt = conn.prepareStatement(sql);
 								pt.setString(1, newPwField1.getText());
 								pt.setInt(2, id);
-								int result = pt.executeUpdate();
+								pt.executeUpdate();
 								
-								System.out.println(result);
 							} catch (SQLException e1) {
 								e1.printStackTrace();
 							}
