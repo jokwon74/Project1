@@ -231,8 +231,8 @@ public class loginGUI extends JFrame {
 						// 현재 비밀번호 값이 다르거나, 새비밀번호와 새비밀번호 재입력 값이 다를 시
 						}else if (!nowPwField.getText().equals(pw) || !newPwField1.getText().equals(newPwField2.getText())) {
 							JOptionPane.showMessageDialog(btn, "비밀번호가 일치하지 않습니다.");
+						// 현재 비밀번호 값이 일치하고 새비밀번호와 새비밀번호 재입력 값이 일치할 시
 						}else if(newPwField1.getText().equals(newPwField2.getText())) {
-							// 새 비밀번호를 LOGIN 테이블 EMP_PW에 저장해야됨
 							Connection conn;
 							PreparedStatement pt;
 							ResultSet rs;
