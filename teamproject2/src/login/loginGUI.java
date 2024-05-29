@@ -121,19 +121,19 @@ public class loginGUI extends JFrame {
 						pt2 = conn.prepareStatement(sql2);
 						rs2 = pt2.executeQuery();
 						
-						String inputId = idField.getText();
+						int inputId = Integer.parseInt(idField.getText());
 						String inputPw = pwField.getText();
 						
 						
 						while(rs2.next() && rs1.next()) {
 							String birth = rs1.getString("EMP_BIRTH");
 							
-							String id = rs2.getString("EMP_ID");
+							int id = rs2.getInt("EMP_ID");
 							String pw = rs2.getString("EMP_PW");
 							
 								
 							// 1. 첫 로그인 : 비밀번호 변경 팝업
-							if((id.equals(inputId)) && (pw.equals(inputPw)) && (pw.equals(birth))) {
+							if((id == inputId) && (pw.equals(inputPw)) && (pw.equals(birth))) {
 								System.out.println("로그인 성공");
 								ChangePw(id, pw);
 								return;
@@ -163,7 +163,7 @@ public class loginGUI extends JFrame {
 			
 			
 			// 초기 비밀번호 변경
-			private void ChangePw(String id, String pw) {
+			private void ChangePw(int id, String pw) {
 				setTitle("비밀번호 변경");
 				setLayout(null);
 				setBounds(200, 100, 500, 300);
@@ -242,7 +242,7 @@ public class loginGUI extends JFrame {
 								String sql = "update LOGIN set EMP_PW = ? WHERE EMP_ID = ?";
 								pt = conn.prepareStatement(sql);
 								pt.setString(1, newPwField1.getText());
-								pt.setString(2, id);
+								pt.setInt(2, id);
 								int result = pt.executeUpdate();
 								
 								System.out.println(result);
