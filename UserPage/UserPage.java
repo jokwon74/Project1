@@ -38,6 +38,7 @@ public class UserPage extends JFrame{
 
 	private void initContainer(String title, int x, int y, int width, int height) {
 
+		setLayout(null);
 		setTitle(title);
 		setBounds(x, y, width, height);
 
@@ -186,16 +187,12 @@ public class UserPage extends JFrame{
 		menubar.add(menu03);
 		menubar.add(menu04);
 		
-        //메뉴바 가운데 정렬
-		JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        centerPanel.add(menubar);
-		
-        //bar 패널에 추가
-        barpanel.add(centerPanel, BorderLayout.CENTER);
-        
-        // 프레임에 bar패널 추가
-        add(barpanel);
+
+		mMenubarPanel = new JPanel();
+		mMenubarPanel.setBounds(200, 80, 550, 200);
+        mMenubarPanel.add(menubar);
+  
+        add(mMenubarPanel);
  
 
 	}
