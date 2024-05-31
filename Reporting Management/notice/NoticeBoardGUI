@@ -1,0 +1,156 @@
+package notice;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.Vector;
+
+public class NoticeBoardGUI extends JFrame {
+    private JTable noticeTable;
+    private DefaultTableModel tableModel;
+    private JTextField keywordField;
+
+    public NoticeBoardGUI() {
+        setTitle("공지 게시판");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        // 상단 검색 패널
+        JPanel searchPanel = new JPanel();
+        keywordField = new JTextField(20);
+        JButton searchButton = new JButton("검색");
+        searchPanel.add(new JLabel("키워드:"));
+        searchPanel.add(keywordField);
+        searchPanel.add(searchButton);
+        add(searchPanel, BorderLayout.NORTH);
+
+        // 공지사항 테이블
+        tableModel = new DefaultTableModel(new String[]{"제목", "작성자", "날짜", "공지 유형"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        noticeTable = new JTable(tableModel) {
+            @Override
+            public Component prepareRenderer(javax.swing.table.TableCellRenderer renderer, int row, int column) {
+                Component c = super.prepareRenderer(renderer, row, column);
+                String noticeType = (String) getValueAt(row, 3);
+                if (noticeType.equals("필독 공지")) {
+                    c.setForeground(Color.RED);
+                } else {
+                    c.setForeground(Color.BLUE);
+                }
+                return c;
+            }
+        };
+        noticeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane scrollPane = new JScrollPane(noticeTable);
+        add(scrollPane, BorderLayout.CENTER);
+
+        // 하단 버튼 패널
+        JPanel buttonPanel = new JPanel();
+        JButton addButton = new JButton("공지사항 작성");
+        buttonPanel.add(addButton);
+        add(buttonPanel, BorderLayout.SOUTH);
+
+        // 공지사항 작성 버튼 클릭 이벤트
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new NoticeFormGUI(NoticeBoardGUI.this).setVisible(true);
+            }
+        });
+
+        // 검색 버튼 클릭 이벤트
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String keyword = keywordField.getText();
+                searchNotices(keyword);
+            }
+        });
+
+        // 테이블 행 클릭 이벤트
+        noticeTable.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting() && noticeTable.getSelectedRow() != -1) {
+                int row = noticeTable.getSelectedRow();
+                String title = (String) tableModel.getValueAt(row, 0);
+                showNoticeDetails(title);
+            }
+        });
+
+        loadNotices();
+    }
+
+    // 공지사항 로드
+    void loadNotices() {
+        try (Connection conn = DBUtil.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT title, writer, date, noticeType FROM NoticeBoard")) {
+            tableModel.setRowCount(0);
+            while (rs.next()) {
+                Vector<Object> row = new Vector<>();
+                row.add(rs.getString("title"));
+                row.add(rs.getString("writer"));
+                row.add(rs.getTimestamp("date").toLocalDateTime());
+                String noticeType = rs.getString("noticeType");
+                row.add(noticeType);
+                tableModel.addRow(row);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 공지사항 검색
+    private void searchNotices(String keyword) {
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement("SELECT title, writer, date, noticeType FROM NoticeBoard WHERE content LIKE ? OR title LIKE ?")) {
+            pstmt.setString(1, "%" + keyword + "%");
+            pstmt.setString(2, "%" + keyword + "%");
+            try (ResultSet rs = pstmt.executeQuery()) {
+                tableModel.setRowCount(0);
+                while (rs.next()) {
+                    Vector<Object> row = new Vector<>();
+                    row.add(rs.getString("title"));
+                    row.add(rs.getString("writer"));
+                    row.add(rs.getTimestamp("date").toLocalDateTime());
+                    String noticeType = rs.getString("noticeType");
+                    row.add(noticeType);
+                    tableModel.addRow(row);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 공지사항 상세 보기
+    private void showNoticeDetails(String title) {
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM NoticeBoard WHERE title = ?")) {
+            pstmt.setString(1, title);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String content = rs.getString("content");
+                    String writer = rs.getString("writer");
+                    LocalDateTime date = rs.getTimestamp("date").toLocalDateTime();
+                    String noticeType = rs.getString("noticeType");
+                    new NoticeDetailGUI(title, content, writer, date, noticeType).setVisible(true);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new NoticeBoardGUI().setVisible(true));
+    }
+}
