@@ -12,7 +12,7 @@ public class SalaryDAO {
 
 	public static ArrayList<SalaryVO> select() {
 
-		System.out.println("∫¿±ﬁDao≈¨∑°Ω∫ select()");
+		System.out.println("Î¥âÍ∏âDaoÌÅ¥ÎûòÏä§ select()");
 
 		ArrayList<SalaryVO> list = new ArrayList<SalaryVO>();
 
@@ -31,8 +31,8 @@ public class SalaryDAO {
 				temp.setSalary(rs.getInt("SALARY"));
 				temp.setMonthly_pay(rs.getInt("MONTHLY_PAY"));
 				temp.setBonus(rs.getDouble("BONUS"));
-				temp.setTravel_allowance(rs.getInt("TRAVEL_ALLOWANCE")); // √‚¿Â∫Ò
-				temp.setTransport_allowance(rs.getInt("TRANSPORT_ALLOWANCE")); // ±≥≈Î∫Ò
+				temp.setTravel_allowance(rs.getInt("TRAVEL_ALLOWANCE")); // Ï∂úÏû•ÎπÑ
+				temp.setTransport_allowance(rs.getInt("TRANSPORT_ALLOWANCE")); // ÍµêÌÜµÎπÑ
 				i++;
 				list.add(temp);
 			}
@@ -76,7 +76,7 @@ public class SalaryDAO {
 					sql.append(criteria).append(" < 1 AND ").append(criteria).append(" ")
 							.append(getConditionOperator(salaryCond)).append(" ?");
 					keyword = String.valueOf(Double.parseDouble(keyword) / 100);
-				} else if ("¡§æ◊¡¶".equals(bonusTypeCond)) {
+				} else if ("Ï†ïÏï°Ï†ú".equals(bonusTypeCond)) {
 					sql.append(criteria).append(" >= 10000 AND ").append(criteria).append(" ")
 							.append(getConditionOperator(salaryCond)).append(" ?");
 				}
@@ -116,9 +116,9 @@ public class SalaryDAO {
 
 	private static String getConditionOperator(String condition) {
 		switch (condition) {
-		case "¿ÃªÛ":
+		case "Ïù¥ÏÉÅ":
 			return ">=";
-		case "¿Ã«œ":
+		case "Ïù¥Ìïò":
 			return "<=";
 		default:
 			return "=";
