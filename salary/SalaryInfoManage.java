@@ -24,7 +24,7 @@ public class SalaryInfoManage extends JPanel implements ActionListener, MouseLis
 	private JTextField searchField;
 	private JComboBox<String> searchCriteria;
 	private JComboBox<String> salaryCondition;
-	private JComboBox<String> bonusTypeCondition; // Ãß°¡µÈ º¸³Ê½º Å¸ÀÔ Ã¼Å©¹Ú½º
+	private JComboBox<String> bonusTypeCondition; // ì¶”ê°€ëœ ë³´ë„ˆìŠ¤ íƒ€ì… ì²´í¬ë°•ìŠ¤
 	private JPanel conditionPanel;
 	private JPanel detailPanel;
 	private JLabel detailLabel;
@@ -45,7 +45,7 @@ public class SalaryInfoManage extends JPanel implements ActionListener, MouseLis
 
 			@Override
 			public boolean isCellEditable(int row, int column) {
-				return false; // ¸ğµç ¼¿¿¡ ´ëÇØ ÆíÁı ºÒ°¡
+				return false; // ëª¨ë“  ì…€ì— ëŒ€í•´ í¸ì§‘ ë¶ˆê°€
 			}
 		};
 
@@ -57,15 +57,15 @@ public class SalaryInfoManage extends JPanel implements ActionListener, MouseLis
 
 		detailLabel = new JLabel();
 		detailLabel.setVerticalAlignment(SwingConstants.TOP);
-		detailPanel.add(detailLabel); // detailPanel¿¡ detailLabel Ãß°¡
+		detailPanel.add(detailLabel); // detailPanelì— detailLabel ì¶”ê°€
 
-		model.addColumn("»ç¹ø");
-		model.addColumn("ÀÌ¸§");
-		model.addColumn("¿ù±Ş");
-		model.addColumn("±³Åëºñ");
-		model.addColumn("ÃâÀåºñ");
-		model.addColumn("º¸³Ê½º");
-		model.addColumn("½Ç¼ö·É");
+		model.addColumn("ì‚¬ë²ˆ");
+		model.addColumn("ì´ë¦„");
+		model.addColumn("ì›”ê¸‰");
+		model.addColumn("êµí†µë¹„");
+		model.addColumn("ì¶œì¥ë¹„");
+		model.addColumn("ë³´ë„ˆìŠ¤");
+		model.addColumn("ì‹¤ìˆ˜ë ¹");
 		for (SalaryVO temp : list) {
 			int bonus1 = temp.getBonus() < 1 ? (int) (temp.getBonus() * temp.getMonthly_pay()) : (int) temp.getBonus();
 			String bonus;
@@ -81,7 +81,7 @@ public class SalaryInfoManage extends JPanel implements ActionListener, MouseLis
 		JScrollPane sp = new JScrollPane(table);
 		tablePanel.add(sp, BorderLayout.CENTER);
 
-		// Çà ¼±ÅÃ ¸®½º³Ê Ãß°¡
+		// í–‰ ì„ íƒ ë¦¬ìŠ¤ë„ˆ ì¶”ê°€
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
@@ -103,31 +103,31 @@ public class SalaryInfoManage extends JPanel implements ActionListener, MouseLis
 
 		searchPanel.setBounds(450, 0, 500, 30);
 
-		String[] searchOptions = { "»ç¹ø", "ÀÌ¸§", "¿ù±Ş", "º¸³Ê½º" }; // »ç¿ëÀÚ¿¡°Ô Ç¥½ÃµÉ ¿É¼Ç
-		String[] columnNames = { "EMP_ID", "EMP_NAME", "MONTHLY_PAY", "BONUS" }; // µ¥ÀÌÅÍº£ÀÌ½º ÄÃ·³¸í
+		String[] searchOptions = { "ì‚¬ë²ˆ", "ì´ë¦„", "ì›”ê¸‰", "ë³´ë„ˆìŠ¤" }; // ì‚¬ìš©ìì—ê²Œ í‘œì‹œë  ì˜µì…˜
+		String[] columnNames = { "EMP_ID", "EMP_NAME", "MONTHLY_PAY", "BONUS" }; // ë°ì´í„°ë² ì´ìŠ¤ ì»¬ëŸ¼ëª…
 		searchCriteria = new JComboBox<>(searchOptions);
 		searchPanel.add(searchCriteria);
 
 		searchField = new JTextField(20);
 		searchPanel.add(searchField);
 
-		// ¿ù±Ş Á¶°Ç Ã¼Å©¹Ú½º
-		salaryCondition = new JComboBox<>(new String[] { "ÀÌ»ó", "ÀÌÇÏ" });
-		salaryCondition.setVisible(false); // Ã³À½¿¡´Â º¸ÀÌÁö ¾Êµµ·Ï ¼³Á¤
+		// ì›”ê¸‰ ì¡°ê±´ ì²´í¬ë°•ìŠ¤
+		salaryCondition = new JComboBox<>(new String[] { "ì´ìƒ", "ì´í•˜" });
+		salaryCondition.setVisible(false); // ì²˜ìŒì—ëŠ” ë³´ì´ì§€ ì•Šë„ë¡ ì„¤ì •
 
-		bonusTypeCondition = new JComboBox<>(new String[] { "%", "Á¤¾×Á¦" });
-		bonusTypeCondition.setVisible(false); // Ã³À½¿¡´Â º¸ÀÌÁö ¾Êµµ·Ï ¼³Á¤
+		bonusTypeCondition = new JComboBox<>(new String[] { "%", "ì •ì•¡ì œ" });
+		bonusTypeCondition.setVisible(false); // ì²˜ìŒì—ëŠ” ë³´ì´ì§€ ì•Šë„ë¡ ì„¤ì •
 
-		// Á¶°Ç ÆĞ³Î
+		// ì¡°ê±´ íŒ¨ë„
 		conditionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		conditionPanel.add(salaryCondition);
 		conditionPanel.add(bonusTypeCondition);
 		conditionPanel.setVisible(false);
 
-		// º¸³Ê½º Á¶°Ç Ã¼Å©¹Ú½º
+		// ë³´ë„ˆìŠ¤ ì¡°ê±´ ì²´í¬ë°•ìŠ¤
 		searchPanel.add(conditionPanel);
 
-		JButton searchButton = new JButton("°Ë»ö");
+		JButton searchButton = new JButton("ê²€ìƒ‰");
 		searchPanel.add(searchButton);
 
 		add(searchPanel);
@@ -147,7 +147,7 @@ public class SalaryInfoManage extends JPanel implements ActionListener, MouseLis
 			public void actionPerformed(ActionEvent e) {
 				String keyword = searchField.getText();
 				int selectedIndex = searchCriteria.getSelectedIndex();
-				String criteria = columnNames[selectedIndex]; // ¼±ÅÃµÈ ¿É¼Ç¿¡ ´ëÀÀÇÏ´Â ÄÃ·³¸í
+				String criteria = columnNames[selectedIndex]; // ì„ íƒëœ ì˜µì…˜ì— ëŒ€ì‘í•˜ëŠ” ì»¬ëŸ¼ëª…
 				String salaryCond = salaryCondition.isVisible() ? (String) salaryCondition.getSelectedItem() : null;
 				String bonusTypeCond = bonusTypeCondition.isVisible() ? (String) bonusTypeCondition.getSelectedItem()
 						: null;
@@ -164,9 +164,9 @@ public class SalaryInfoManage extends JPanel implements ActionListener, MouseLis
 		salaryCondition.setVisible(false);
 		bonusTypeCondition.setVisible(false);
 
-		if ("¿ù±Ş".equals(selectedCriteria)) {
+		if ("ì›”ê¸‰".equals(selectedCriteria)) {
 			salaryCondition.setVisible(true);
-		} else if ("º¸³Ê½º".equals(selectedCriteria)) {
+		} else if ("ë³´ë„ˆìŠ¤".equals(selectedCriteria)) {
 			salaryCondition.setVisible(true);
 			bonusTypeCondition.setVisible(true);
 		} else {
@@ -178,15 +178,15 @@ public class SalaryInfoManage extends JPanel implements ActionListener, MouseLis
 	}
 
 	private void filterTable(String criteria, String keyword, String salaryCond, String bonusTypeCond) {
-		list = SalaryDAO.search(criteria, keyword, salaryCond, bonusTypeCond); // °Ë»ö °á°ú °¡Á®¿À±â
+		list = SalaryDAO.search(criteria, keyword, salaryCond, bonusTypeCond); // ê²€ìƒ‰ ê²°ê³¼ ê°€ì ¸ì˜¤ê¸°
 		DefaultTableModel filteredModel = new DefaultTableModel();
-		filteredModel.addColumn("»ç¹ø");
-		filteredModel.addColumn("ÀÌ¸§");
-		filteredModel.addColumn("¿ù±Ş");
-		filteredModel.addColumn("±³Åëºñ");
-		filteredModel.addColumn("ÃâÀåºñ");
-		filteredModel.addColumn("º¸³Ê½º");
-		filteredModel.addColumn("½Ç¼ö·É");
+		filteredModel.addColumn("ì‚¬ë²ˆ");
+		filteredModel.addColumn("ì´ë¦„");
+		filteredModel.addColumn("ì›”ê¸‰");
+		filteredModel.addColumn("êµí†µë¹„");
+		filteredModel.addColumn("ì¶œì¥ë¹„");
+		filteredModel.addColumn("ë³´ë„ˆìŠ¤");
+		filteredModel.addColumn("ì‹¤ìˆ˜ë ¹");
 
 		for (SalaryVO temp : list) {
 			int bonus1 = temp.getBonus() < 1 ? (int) (temp.getBonus() * temp.getMonthly_pay()) : (int) temp.getBonus();
@@ -201,94 +201,94 @@ public class SalaryInfoManage extends JPanel implements ActionListener, MouseLis
 	}
 
 //	private void showEmployeeDetails(int empId) {
-//	    DetailVO employee = SalaryDAO.detailSelect(empId); // ¼öÁ¤µÈ ºÎºĞ
+//	    DetailVO employee = SalaryDAO.detailSelect(empId); // ìˆ˜ì •ëœ ë¶€ë¶„
 //	    if (employee != null) {
 //	        detailPanel.setVisible(true);
-//	        detailLabel.setPreferredSize(new Dimension(detailPanel.getWidth(), detailPanel.getHeight())); // µğÅ×ÀÏ ÆĞ³Î Å©±â ¼³Á¤
+//	        detailLabel.setPreferredSize(new Dimension(detailPanel.getWidth(), detailPanel.getHeight())); // ë””í…Œì¼ íŒ¨ë„ í¬ê¸° ì„¤ì •
 //	        StringBuilder details = new StringBuilder();
 //	        details.append("<html><style>")
 //	               .append("table { table-layout: fixed; width: 100%; }")
 //	               .append("th, td { border: 1px solid black; padding: 5px; }")
 //	               .append("td.money { text-align: right; }")
 //	               .append("</style><table>");
-//	        details.append("<tr><th colspan='4'>°ø¿¬¿ä±İ</th></tr>");
-//	        details.append("<tr><th>»ç¹ø</th><td>").append(employee.getEMP_id()).append("</td>");
-//	        details.append("<th>ÀÌ¸§</th><td>").append(employee.getEMP_NAME()).append("</td></tr>");
-//	        details.append("<tr><th>ºÎ¼­</th><td>").append(employee.getDEPT_CODE()).append("</td>");
-//	        details.append("<th>Á÷±Ş</th><td>").append(employee.getJOB_CODE()).append("</td></tr>");
-//	        details.append("<tr><th>¿¬ºÀ</th><td colspan='3' class='money'>").append(df.format(employee.getSalary())).append("</td></tr>");
-//	        details.append("<tr><th>¿ù ±âº»±Ş</th><td colspan='3' class='money'>").append(df.format(employee.getMonthly_pay())).append("</td></tr>");
+//	        details.append("<tr><th colspan='4'>ê³µì—°ìš”ê¸ˆ</th></tr>");
+//	        details.append("<tr><th>ì‚¬ë²ˆ</th><td>").append(employee.getEMP_id()).append("</td>");
+//	        details.append("<th>ì´ë¦„</th><td>").append(employee.getEMP_NAME()).append("</td></tr>");
+//	        details.append("<tr><th>ë¶€ì„œ</th><td>").append(employee.getDEPT_CODE()).append("</td>");
+//	        details.append("<th>ì§ê¸‰</th><td>").append(employee.getJOB_CODE()).append("</td></tr>");
+//	        details.append("<tr><th>ì—°ë´‰</th><td colspan='3' class='money'>").append(df.format(employee.getSalary())).append("</td></tr>");
+//	        details.append("<tr><th>ì›” ê¸°ë³¸ê¸‰</th><td colspan='3' class='money'>").append(df.format(employee.getMonthly_pay())).append("</td></tr>");
 //	        if (employee.getBonus() > 10) {
-//	            details.append("<tr><th>º¸³Ê½º</th><td colspan='3' class='money'>").append(df.format(employee.getBonus())).append("</td></tr>");
+//	            details.append("<tr><th>ë³´ë„ˆìŠ¤</th><td colspan='3' class='money'>").append(df.format(employee.getBonus())).append("</td></tr>");
 //	        } else {
 //	            int bon = (int) (employee.getBonus() * employee.getMonthly_pay());
-//	            int bon1 = (int) (employee.getBonus() * 100); // ¼öÁ¤µÈ ºÎºĞ
-//	            details.append("<tr><th>º¸³Ê½º ( ").append(bon1).append("% )</th><td colspan='3' class='money'>").append(df.format(bon)).append("</td></tr>");
+//	            int bon1 = (int) (employee.getBonus() * 100); // ìˆ˜ì •ëœ ë¶€ë¶„
+//	            details.append("<tr><th>ë³´ë„ˆìŠ¤ ( ").append(bon1).append("% )</th><td colspan='3' class='money'>").append(df.format(bon)).append("</td></tr>");
 //	        }
-//	        details.append("<tr><th>ÃâÀåºñ</th><td colspan='3' class='money'> ").append(df.format(employee.getTravel_allowance())).append("</td></tr>");
-//	        details.append("<tr><th>±³Åëºñ</th><td colspan='3' class='money'> ").append(df.format(employee.getTransport_allowance())).append("</td></tr>");
-//	        // ¼Òµæ¼¼, °Ç°­º¸Çè·á °øÁ¦ °è»ê
-//	        double incomeTax = employee.getMonthly_pay() * 0.03; // ¿¹½Ã·Î 3% ¼Òµæ¼¼
-//	        double healthInsurance = employee.getMonthly_pay() * 0.035; // ¿¹½Ã·Î 3.5% °Ç°­º¸Çè·á
+//	        details.append("<tr><th>ì¶œì¥ë¹„</th><td colspan='3' class='money'> ").append(df.format(employee.getTravel_allowance())).append("</td></tr>");
+//	        details.append("<tr><th>êµí†µë¹„</th><td colspan='3' class='money'> ").append(df.format(employee.getTransport_allowance())).append("</td></tr>");
+//	        // ì†Œë“ì„¸, ê±´ê°•ë³´í—˜ë£Œ ê³µì œ ê³„ì‚°
+//	        double incomeTax = employee.getMonthly_pay() * 0.03; // ì˜ˆì‹œë¡œ 3% ì†Œë“ì„¸
+//	        double healthInsurance = employee.getMonthly_pay() * 0.035; // ì˜ˆì‹œë¡œ 3.5% ê±´ê°•ë³´í—˜ë£Œ
 //	        double netPay = employee.getMonthly_pay() - incomeTax - healthInsurance;
-//	        details.append("<tr><th>¼Òµæ¼¼</th><td colspan='3' class='money'> ").append(df.format(incomeTax)).append("</td></tr>");
-//	        details.append("<tr><th>°Ç°­º¸Çè·á</th><td colspan='3' class='money'> ").append(df.format(healthInsurance)).append("</td></tr>");
-//	        details.append("<tr><th>½Ç¼ö·É¾×</th><td colspan='3' class='money'> ").append(df.format(netPay)).append("</td></tr>");
+//	        details.append("<tr><th>ì†Œë“ì„¸</th><td colspan='3' class='money'> ").append(df.format(incomeTax)).append("</td></tr>");
+//	        details.append("<tr><th>ê±´ê°•ë³´í—˜ë£Œ</th><td colspan='3' class='money'> ").append(df.format(healthInsurance)).append("</td></tr>");
+//	        details.append("<tr><th>ì‹¤ìˆ˜ë ¹ì•¡</th><td colspan='3' class='money'> ").append(df.format(netPay)).append("</td></tr>");
 //	        details.append("</table></html>");
 //
 //	        detailLabel.setText(details.toString());
 //	    }
 //	}
 	private void showEmployeeDetails(int empId) {
-	    DetailVO employee = SalaryDAO.detailSelect(empId); // ¼öÁ¤µÈ ºÎºĞ
+	    DetailVO employee = SalaryDAO.detailSelect(empId); // ìˆ˜ì •ëœ ë¶€ë¶„
 	    if (employee != null) {
 	        detailPanel.removeAll();
 	        detailPanel.setLayout(new BorderLayout());
 	        detailPanel.setVisible(true);
 
-	        // ¼Òµæ¼¼, °Ç°­º¸Çè·á °øÁ¦ °è»ê
-	        double incomeTax = employee.getMonthly_pay() * 0.03; // ¿¹½Ã·Î 3% ¼Òµæ¼¼
-	        double healthInsurance = employee.getMonthly_pay() * 0.035; // ¿¹½Ã·Î 3.5% °Ç°­º¸Çè·á
+	        // ì†Œë“ì„¸, ê±´ê°•ë³´í—˜ë£Œ ê³µì œ ê³„ì‚°
+	        double incomeTax = employee.getMonthly_pay() * 0.03; // ì˜ˆì‹œë¡œ 3% ì†Œë“ì„¸
+	        double healthInsurance = employee.getMonthly_pay() * 0.035; // ì˜ˆì‹œë¡œ 3.5% ê±´ê°•ë³´í—˜ë£Œ
 	        double netPay = employee.getMonthly_pay() - incomeTax - healthInsurance+employee.getBonus()+employee.getTransport_allowance()+employee.getTravel_allowance();
 
-	        // ±İ¾×À» Æ÷¸ËÆÃÇÏ±â À§ÇØ DecimalFormat »ç¿ë
+	        // ê¸ˆì•¡ì„ í¬ë§·íŒ…í•˜ê¸° ìœ„í•´ DecimalFormat ì‚¬ìš©
 	        DecimalFormat df = new DecimalFormat("#,### \u00A4");
 
-	        // Å×ÀÌºí µ¥ÀÌÅÍ ¼³Á¤
-	        String[] columnNames = {"Ç×¸ñ", "³»¿ë"};
+	        // í…Œì´ë¸” ë°ì´í„° ì„¤ì •
+	        String[] columnNames = {"í•­ëª©", "ë‚´ìš©"};
 	        Object[][] data = {
-	            {"»ç¹ø", employee.getEMP_id()},
-	            {"ÀÌ¸§", employee.getEMP_NAME()},
-	            {"ºÎ¼­", employee.getDEPT_CODE()},
-	            {"Á÷±Ş", employee.getJOB_CODE()},
-	            {"¿¬ºÀ", df.format(employee.getSalary())},
-	            {"¿ù ±âº»±Ş", df.format(employee.getMonthly_pay())},
-	            {"º¸³Ê½º", employee.getBonus() > 10 ? df.format(employee.getBonus()) : df.format(employee.getBonus() * employee.getMonthly_pay()) + " (" + (int)(employee.getBonus() * 100) + "%)"},
-	            {"ÃâÀåºñ", df.format(employee.getTravel_allowance())},
-	            {"±³Åëºñ", df.format(employee.getTransport_allowance())},
-	            {"¼Òµæ¼¼", "- " + df.format(incomeTax)},
-	            {"°Ç°­º¸Çè·á", "- " + df.format(healthInsurance)},
-	            {"½Ç¼ö·É¾×", df.format(netPay)}
+	            {"ì‚¬ë²ˆ", employee.getEMP_id()},
+	            {"ì´ë¦„", employee.getEMP_NAME()},
+	            {"ë¶€ì„œ", employee.getDEPT_CODE()},
+	            {"ì§ê¸‰", employee.getJOB_CODE()},
+	            {"ì—°ë´‰", df.format(employee.getSalary())},
+	            {"ì›” ê¸°ë³¸ê¸‰", df.format(employee.getMonthly_pay())},
+	            {"ë³´ë„ˆìŠ¤", employee.getBonus() > 10 ? df.format(employee.getBonus()) : df.format(employee.getBonus() * employee.getMonthly_pay()) + " (" + (int)(employee.getBonus() * 100) + "%)"},
+	            {"ì¶œì¥ë¹„", df.format(employee.getTravel_allowance())},
+	            {"êµí†µë¹„", df.format(employee.getTransport_allowance())},
+	            {"ì†Œë“ì„¸", "- " + df.format(incomeTax)},
+	            {"ê±´ê°•ë³´í—˜ë£Œ", "- " + df.format(healthInsurance)},
+	            {"ì‹¤ìˆ˜ë ¹ì•¡", df.format(netPay)}
 	        };
 
 	        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
 	            @Override
 	            public boolean isCellEditable(int row, int column) {
-	                return false; // ¸ğµç ¼¿¿¡ ´ëÇØ ÆíÁı ºÒ°¡
+	                return false; // ëª¨ë“  ì…€ì— ëŒ€í•´ í¸ì§‘ ë¶ˆê°€
 	            }
 	        };
 
 	        JTable detailTable = new JTable(model);
 	        detailTable.setRowHeight(30);
-	        detailTable.getColumnModel().getColumn(0).setPreferredWidth(100); // Ç×¸ñ ¿­ ³Êºñ Á¶Á¤
-	        detailTable.getColumnModel().getColumn(1).setPreferredWidth(200); // ³»¿ë ¿­ ³Êºñ Á¶Á¤
+	        detailTable.getColumnModel().getColumn(0).setPreferredWidth(100); // í•­ëª© ì—´ ë„ˆë¹„ ì¡°ì •
+	        detailTable.getColumnModel().getColumn(1).setPreferredWidth(200); // ë‚´ìš© ì—´ ë„ˆë¹„ ì¡°ì •
 
-	        // Áß¾Ó Á¤·Ä
+	        // ì¤‘ì•™ ì •ë ¬
 	        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 	        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 	        detailTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 
-	        // ¿ìÃø Á¤·Ä
+	        // ìš°ì¸¡ ì •ë ¬
 	        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
 	        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
 	        detailTable.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
