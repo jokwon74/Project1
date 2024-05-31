@@ -1,0 +1,34 @@
+package notice;
+
+import javax.swing.*;
+import java.awt.*;
+import java.time.LocalDateTime;
+
+public class NoticeDetailGUI extends JFrame {
+    public NoticeDetailGUI(String title, String content, String writer, LocalDateTime date, String noticeType) {
+        setTitle("공지사항 상세");
+        setSize(400, 300);
+        setLayout(new GridLayout(5, 1));
+
+        String noticeTypeStr = noticeType.equals("필독 공지") ? "필독 공지" : "일반 공지";
+        Color noticeColor = noticeType.equals("필독 공지") ? Color.RED : Color.BLUE;
+
+        JLabel titleLabel = new JLabel("제목: " + title);
+        JLabel writerLabel = new JLabel("작성자: " + writer);
+        JLabel dateLabel = new JLabel("날짜: " + date.toString());
+        JLabel noticeTypeLabel = new JLabel("공지 유형: " + noticeTypeStr);
+        JTextArea contentArea = new JTextArea(content);
+        contentArea.setEditable(false);
+
+        titleLabel.setForeground(noticeColor);
+        writerLabel.setForeground(noticeColor);
+        dateLabel.setForeground(noticeColor);
+        noticeTypeLabel.setForeground(noticeColor);
+
+        add(titleLabel);
+        add(writerLabel);
+        add(dateLabel);
+        add(noticeTypeLabel);
+        add(new JScrollPane(contentArea));
+    }
+}
