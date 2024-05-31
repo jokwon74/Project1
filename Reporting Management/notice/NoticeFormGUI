@@ -1,0 +1,75 @@
+package notice;
+
+package project66;
+
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
+public class NoticeFormGUI extends JFrame {
+    private JTextField titleField;
+    private JTextField writerField;
+    private JTextArea contentArea;
+    private JComboBox<String> noticeTypeBox;
+    private NoticeBoardGUI parent;
+
+    public NoticeFormGUI(NoticeBoardGUI parent) {
+        this.parent = parent;
+        setTitle("공지사항 작성");
+        setSize(400, 300);
+        setLayout(new GridLayout(5, 2));
+
+        titleField = new JTextField();
+        writerField = new JTextField();
+        contentArea = new JTextArea();
+        noticeTypeBox = new JComboBox<>(new String[]{"일반 공지", "필독 공지"});
+        JButton addButton = new JButton("공지사항 추가");
+
+        add(new JLabel("제목:"));
+        add(titleField);
+        add(new JLabel("작성자:"));
+        add(writerField);
+        add(new JLabel("내용:"));
+        add(new JScrollPane(contentArea));
+        add(new JLabel("공지 유형:"));
+        add(noticeTypeBox);
+        add(new JLabel());
+        add(addButton);
+
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String title = titleField.getText();
+                String writer = writerField.getText();
+                String content = contentArea.getText();
+                String noticeType = (String) noticeTypeBox.getSelectedItem();
+                addNotice(title, writer, content, noticeType);
+            }
+        });
+    }
+
+    private void addNotice(String title, String writer, String content, String noticeType) {
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO NoticeBoard (title, content, writer, noticeType, date) VALUES (?, ?, ?, ?, ?)")) {
+            pstmt.setString(1, title);
+            pstmt.setString(2, content);
+            pstmt.setString(3, writer);
+            pstmt.setString(4, noticeType);
+            pstmt.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
+            pstmt.executeUpdate();
+            JOptionPane.showMessageDialog(this, "공지사항이 추가되었습니다.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            parent.loadNotices();
+            dispose();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "공지사항 추가에 실패했습니다.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+}
