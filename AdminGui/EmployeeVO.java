@@ -1,8 +1,8 @@
-package GUI;
+package Admin;
 
 import java.time.LocalDateTime;
 
-public class EmployeeVO {
+public class EmployeeVO{
 	
 	private int EMP_ID        ;
 	private String EMP_NAME      ;
@@ -12,9 +12,16 @@ public class EmployeeVO {
 	private String DEPT_CODE     ;
 	private String JOB_CODE      ;
 	private String HIRE_DATE     ;
+	private String Dept_id;
+	private String Dept_name;
+	private String AUTHORITY;
 	
-
-	
+	public String getAUTHORITY() {
+		return AUTHORITY;
+	}
+	public void setAUTHORITY(String aUTHORITY) {
+		AUTHORITY = aUTHORITY;
+	}
 	public int getEMP_ID() {
 		return EMP_ID;
 	}
@@ -64,11 +71,28 @@ public class EmployeeVO {
 	public void setHIRE_DATE(String hIRE_DATE) {
 		HIRE_DATE = hIRE_DATE;
 	}
+	public String getDept_id() {
+		return Dept_id;
+	}
+	public void setDept_id(String dept_id) {
+		Dept_id = dept_id;
+	}
+	public String getDept_name() {
+		return Dept_name;
+	}
+	public void setDept_name(String dept_name) {
+		Dept_name = dept_name;
+	}
 	public EmployeeVO() {
 			
 	}
+	
+	
+
+	
 	public EmployeeVO(int eMP_ID, String eMP_NAME, String eMP_BIRTH, String eMAIL, String pHONE, String dEPT_CODE,
 			String jOB_CODE, String hIRE_DATE) {
+		super();
 		EMP_ID = eMP_ID;
 		EMP_NAME = eMP_NAME;
 		EMP_BIRTH = eMP_BIRTH;
@@ -78,16 +102,34 @@ public class EmployeeVO {
 		JOB_CODE = jOB_CODE;
 		HIRE_DATE = hIRE_DATE;
 	}
-	@Override
-	public String toString() {
-		return "EmployeeVO [EMP_ID=" + EMP_ID + ", EMP_NAME=" + EMP_NAME + ", EMP_BIRTH=" + EMP_BIRTH + ", EMAIL="
-				+ EMAIL + ", PHONE=" + PHONE + ", DEPT_CODE=" + DEPT_CODE + ", JOB_CODE=" + JOB_CODE + ", HIRE_DATE="
-				+ HIRE_DATE + "]";
+	public EmployeeVO(int eMP_ID, String eMP_NAME, String eMP_BIRTH, String eMAIL, String pHONE, String dEPT_CODE,
+			String jOB_CODE, String hIRE_DATE, String dept_id, String dept_name, String aUTHORITY) {
+		super();
+		EMP_ID = eMP_ID;
+		EMP_NAME = eMP_NAME;
+		EMP_BIRTH = eMP_BIRTH;
+		EMAIL = eMAIL;
+		PHONE = pHONE;
+		DEPT_CODE = dEPT_CODE;
+		JOB_CODE = jOB_CODE;
+		HIRE_DATE = hIRE_DATE;
+		Dept_id = dept_id;
+		Dept_name = dept_name;
+		AUTHORITY = aUTHORITY;
 	}
+	public EmployeeVO(String eMP_NAME, String eMP_BIRTH, String eMAIL, String pHONE, String dEPT_CODE, String jOB_CODE,
+			String hIRE_DATE) {
+		super();
+		EMP_NAME = eMP_NAME;
+		EMP_BIRTH = eMP_BIRTH;
+		EMAIL = eMAIL;
+		PHONE = pHONE;
+		DEPT_CODE = dEPT_CODE;
+		JOB_CODE = jOB_CODE;
+		HIRE_DATE = hIRE_DATE;
+	}
+	
 
-	
-	
-	
 	
 }
 	

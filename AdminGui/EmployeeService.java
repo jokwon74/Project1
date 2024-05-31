@@ -1,4 +1,4 @@
-package GUI;
+package Admin;
 
 import java.util.ArrayList;
 import java.util.Scanner;

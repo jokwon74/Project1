@@ -1,4 +1,4 @@
-package GUI;
+package Admin;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,7 +14,7 @@ public class DBUtil {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 
 			String url = "jdbc:oracle:thin:@localhost:1521:xe";
-			String user = "c##jhm4";
+			String user = "c##jhm6";
 			String password = "1234";
 
 			conn = DriverManager.getConnection(url, user, password);

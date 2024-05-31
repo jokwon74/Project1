@@ -1,4 +1,4 @@
-package GUI;
+package Admin;
 
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -26,6 +26,12 @@ public class AdminPage extends JFrame{
 		
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	}
+
+
+
+	public AdminPage() {
+		// TODO Auto-generated constructor stub
 	}
 
 
@@ -129,7 +135,8 @@ public class AdminPage extends JFrame{
 	}
 
 	public static void main(String[] args) {
-		AdminPage ap = new AdminPage("관리자 모드", 0,0,1000,750);
+		
+		//AdminPage ap = new AdminPage("관리자 모드", 0,0,1000,750);
 
 	}
 }
