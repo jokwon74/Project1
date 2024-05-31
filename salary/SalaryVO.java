@@ -6,7 +6,7 @@ public class SalaryVO {
 	private int salary;
 	private int monthly_pay;
 	private double bonus;
-    private int transport_allowance;  // ±³ΕλΊρ
+    private int transport_allowance;  // Β±Β³Γ…Γ«ΒΊΓ±
     private int travel_allowance; 
     
 	public SalaryVO() {
