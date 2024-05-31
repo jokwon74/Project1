@@ -1,0 +1,127 @@
+package Report;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.time.LocalDateTime;
+import java.util.List;
+
+public class ReportBoard extends JFrame {
+	private JTable reportTable;
+	private ReportTableModel reportTableModel;
+	private ReportDAO reportDAO;
+
+	public ReportBoard() {
+		setTitle("보고 게시판");
+		setSize(800, 600);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLayout(new BorderLayout());
+
+		try {
+			Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system",
+					"1234");
+			reportDAO = new ReportDAO(connection);
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, "데이터베이스 연결 실패", "Error", JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		}
+
+		reportTableModel = new ReportTableModel();
+		reportTable = new JTable(reportTableModel);
+		loadReports();
+
+		add(new JScrollPane(reportTable), BorderLayout.CENTER);
+		JButton addButton = new JButton("보고서 작성");
+		addButton.addActionListener(e -> openReportDialog());
+		add(addButton, BorderLayout.SOUTH);
+
+		reportTable.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					int row = reportTable.getSelectedRow();
+					Report report = reportTableModel.getReport(row);
+					showReportDialog(report);
+				}
+			}
+		});
+	}
+
+	private void loadReports() {
+		try {
+			List<Report> reports = reportDAO.getAllReports();
+			reportTableModel.setReports(reports);
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, "보고서를 불러오는 중 오류 발생", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private void openReportDialog() {
+		JDialog dialog = new JDialog(this, "보고서 작성", true);
+		dialog.setSize(400, 300);
+		dialog.setLayout(new GridLayout(5, 2));
+
+		JTextField titleField = new JTextField();
+		JTextField fromField = new JTextField();
+		JTextField toField = new JTextField();
+		JTextArea contentArea = new JTextArea();
+
+		dialog.add(new JLabel("보고서 제목:"));
+		dialog.add(titleField);
+		dialog.add(new JLabel("작성자:"));
+		dialog.add(fromField);
+		dialog.add(new JLabel("받는이:"));
+		dialog.add(toField);
+		dialog.add(new JLabel("내용:"));
+		dialog.add(new JScrollPane(contentArea));
+
+		JButton submitButton = new JButton("추가");
+		submitButton.addActionListener(e -> {
+			String title = titleField.getText();
+			String from = fromField.getText();
+			String to = toField.getText();
+			String content = contentArea.getText();
+			LocalDateTime date = LocalDateTime.now();
+
+			Report report = new Report(title, content, from, to, date);
+			try {
+				reportDAO.addReport(report);
+				loadReports();
+				dialog.dispose();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(this, "보고서 추가 중 오류 발생", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		});
+
+		dialog.add(new JLabel());
+		dialog.add(submitButton);
+		dialog.setVisible(true);
+	}
+
+	private void showReportDialog(Report report) {
+		JDialog dialog = new JDialog(this, "보고서 보기", true);
+		dialog.setSize(400, 300);
+		dialog.setLayout(new GridLayout(5, 2));
+
+		dialog.add(new JLabel("보고서 제목:"));
+		dialog.add(new JLabel(report.getReportTitle()));
+		dialog.add(new JLabel("작성자:"));
+		dialog.add(new JLabel(report.getFromId()));
+		dialog.add(new JLabel("받는이:"));
+		dialog.add(new JLabel(report.getToId()));
+		dialog.add(new JLabel("내용:"));
+		dialog.add(new JScrollPane(new JTextArea(report.getReportContent())));
+
+		dialog.setVisible(true);
+	}
+
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(() -> {
+			new ReportBoard().setVisible(true);
+		});
+	}
+}
