@@ -1,0 +1,62 @@
+package Report;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ReportDAO {
+    private Connection connection;
+
+    public ReportDAO(Connection connection) {
+        this.connection = connection;
+    }
+
+    public void addReport(Report report) throws SQLException {
+        String sql = "INSERT INTO reports (report_title, report_content, from_id, to_id, report_date) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, report.getReportTitle());
+            pstmt.setString(2, report.getReportContent());
+            pstmt.setString(3, report.getFromId());
+            pstmt.setString(4, report.getToId());
+            pstmt.setTimestamp(5, Timestamp.valueOf(report.getReportDate()));
+            pstmt.executeUpdate();
+        }
+    }
+
+    public List<Report> getAllReports() throws SQLException {
+        List<Report> reports = new ArrayList<>();
+        String sql = "SELECT * FROM reports";
+        try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                Report report = new Report(
+                    rs.getString("report_title"),
+                    rs.getString("report_content"),
+                    rs.getString("from_id"),
+                    rs.getString("to_id"),
+                    rs.getTimestamp("report_date").toLocalDateTime()
+                );
+                reports.add(report);
+            }
+        }
+        return reports;
+    }
+
+    public Report getReportById(int reportId) throws SQLException {
+        String sql = "SELECT * FROM reports WHERE report_id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, reportId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Report(
+                        rs.getString("report_title"),
+                        rs.getString("report_content"),
+                        rs.getString("from_id"),
+                        rs.getString("to_id"),
+                        rs.getTimestamp("report_date").toLocalDateTime()
+                    );
+                }
+            }
+        }
+        return null;
+    }
+}
