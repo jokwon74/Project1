@@ -1,0 +1,70 @@
+package Report;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+
+public class ReportDialog extends JDialog {
+    private JTextField titleField;
+    private JTextField fromField;
+    private JTextField toField;
+    private JTextArea contentArea;
+    private JButton submitButton;
+    private boolean isSubmit;
+
+    public ReportDialog(Frame owner, String title, boolean modal) {
+        super(owner, title, modal);
+        setSize(400, 300);
+        setLayout(new GridLayout(5, 2));
+
+        titleField = new JTextField();
+        fromField = new JTextField();
+        toField = new JTextField();
+        contentArea = new JTextArea();
+
+        add(new JLabel("보고서 제목:"));
+        add(titleField);
+        add(new JLabel("작성자:"));
+        add(fromField);
+        add(new JLabel("받는이:"));
+        add(toField);
+        add(new JLabel("내용:"));
+        add(new JScrollPane(contentArea));
+
+        submitButton = new JButton("보고서 추가");
+        add(new JLabel());
+        add(submitButton);
+
+        submitButton.addActionListener(e -> {
+            isSubmit = true;
+            setVisible(false);
+        });
+
+        isSubmit = false;
+    }
+
+    public void setReportData(Report report) {
+        titleField.setText(report.getReportTitle());
+        fromField.setText(report.getFromId());
+        toField.setText(report.getToId());
+        contentArea.setText(report.getReportContent());
+    }
+
+    public Report getReport() {
+        String title = titleField.getText();
+        String from = fromField.getText();
+        String to = toField.getText();
+        String content = contentArea.getText();
+        LocalDateTime date = LocalDateTime.now();
+        return new Report(title, content, from, to, date);
+    }
+
+    public void setSubmitButtonListener(ActionListener listener) {
+        submitButton.addActionListener(listener);
+    }
+
+    public boolean isSubmit() {
+        return isSubmit;
+    }
+}
